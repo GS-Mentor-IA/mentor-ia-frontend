@@ -1,6 +1,13 @@
+import { Outlet } from "react-router-dom";
+import Cabecalho from "./components/Cabecalho/Cabecalho";
+
 export default function App() {
  return (
-     <h1>Mentor-IA</h1> 
+  <>
+    <Cabecalho />
+     <Outlet />
+  </>
+     
  )
 
 }  
