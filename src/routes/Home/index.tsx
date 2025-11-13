@@ -120,7 +120,10 @@ function Resultados({
   );
 }
 
-export default function Inicio() {
+export default function Home() {
+
+  document.title = "Mentor.IA - Descubra sua carreira do futuro";
+
   const [etapa, setEtapa] = useState<EtapaPergunta>(null);
   const [perfil, setPerfil] = useState<PerfilUsuario>({
     area: null,

@@ -10,23 +10,24 @@ type PropsCard = {
 } & React.HTMLAttributes<HTMLElement>;
 
 export default function Card({ className = "", to, children, ...rest }: PropsCard) {
-  const classes = ["rounded-lg border border-border bg-card text-card-foreground", className]
+  const classes = [
+    "rounded-lg border bg-white text-gray-900",
+    "border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100",
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 
   if (to) {
-    const { onClick, ...linkRest } = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
-    const handleClick = onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined;
-
     return (
-      <Link to={to} replace={rest.replace as any} target={rest.target as any} className={classes} onClick={handleClick} {...(linkRest as any)}>
+      <Link to={to} replace={rest.replace as any} target={rest.target as any} className={classes} {...(rest as any)}>
         {children}
       </Link>
     );
   }
 
   return (
-    <div className={classes} {...(rest as React.HTMLAttributes<HTMLDivElement>)}>
+    <div className={classes} {...(rest as any)}>
       {children}
     </div>
   );

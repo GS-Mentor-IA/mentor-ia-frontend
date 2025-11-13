@@ -12,7 +12,6 @@ export interface BotaoProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   target?: LinkProps["target"];
   className?: string;
   children?: React.ReactNode;
-  onClick?: React.MouseEventHandler<any>;
   disabled?: boolean;
 }
 
@@ -24,21 +23,20 @@ export default function Botao({
   replace,
   target,
   children,
-  onClick,
   disabled,
   ...rest
 }: BotaoProps) {
   const base =
-    "inline-flex items-center justify-center rounded-md font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+    "inline-flex items-center justify-center rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
   const varianteClass =
     variante === "padrao"
-      ? "bg-primary text-primary-foreground hover:opacity-90"
+      ? "bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
       : variante === "secundario"
-      ? "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+      ? "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white"
       : variante === "contorno"
-      ? "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-      : "hover:bg-accent hover:text-accent-foreground";
+      ? "border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+      : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800";
 
   const tamanhoClass =
     tamanho === "pequeno" ? "h-9 px-3 text-sm" : tamanho === "grande" ? "h-12 px-8 text-base" : "h-10 px-4 text-sm";
@@ -51,18 +49,25 @@ export default function Botao({
         e.preventDefault();
         return;
       }
-      if (onClick) onClick(e);
     };
 
     return (
-      <Link to={to} replace={replace} target={target} className={classes} aria-disabled={disabled} onClick={handleClick}>
+      <Link
+        to={to}
+        replace={replace}
+        target={target}
+        className={classes}
+        aria-disabled={disabled}
+        onClick={handleClick}
+        {...(rest as any)}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={classes} onClick={onClick as React.MouseEventHandler<HTMLButtonElement>} disabled={disabled} {...rest}>
+    <button className={classes} disabled={disabled} {...(rest as any)}>
       {children}
     </button>
   );

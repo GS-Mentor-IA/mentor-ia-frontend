@@ -1,90 +1,68 @@
 @import "tailwindcss";
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 180 65% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
-
-    --radius: 0.75rem;
-
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(180 65% 55%));
-    --gradient-hero: linear-gradient(180deg, hsl(217 91% 60% / 0.05), hsl(180 65% 55% / 0.05));
-    
-    --shadow-soft: 0 2px 8px hsl(217 91% 60% / 0.08);
-    --shadow-medium: 0 4px 16px hsl(217 91% 60% / 0.12);
-    --shadow-strong: 0 8px 24px hsl(217 91% 60% / 0.16);
-
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .dark {
-    --background: 222 47% 8%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 217 91% 65%;
-    --primary-foreground: 222 47% 8%;
-
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 180 65% 60%;
-    --accent-foreground: 222 47% 8%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 217 91% 65%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 65%), hsl(180 65% 60%));
-    --gradient-hero: linear-gradient(180deg, hsl(217 91% 65% / 0.08), hsl(180 65% 60% / 0.08));
-
-    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.3);
-    --shadow-medium: 0 4px 16px hsl(0 0% 0% / 0.4);
-    --shadow-strong: 0 8px 24px hsl(0 0% 0% / 0.5);
-  }
-}
 
 @layer base {
-  * {
-    @apply border-border;
+  /* reset básico */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 
+  /* corpo */
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  /* utilitário para borda padrão (use onde for necessário) */
+  .border-default {
+    @apply border border-gray-200;
+  }
+  .dark .border-default {
+    @apply border-gray-700;
+  }
+
+  /* aplicar borda apenas a elementos de formulário e controles */
+  input,
+  textarea,
+  select,
+  button {
+    @apply rounded-md;
+  }
+  input,
+  textarea,
+  select {
+    @apply border-gray-200 bg-white text-gray-900;
+  }
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply border-gray-700 bg-gray-800 text-gray-100;
+  }
+
+  /* cartão reutilizável */
+  .card {
+    @apply bg-white text-gray-900 rounded-lg border border-gray-200;
+  }
+  .dark .card {
+    @apply bg-gray-800 text-gray-100 border-gray-700;
+  }
+
+  /* gradiente primário */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-indigo-600 to-teal-500;
+  }
+
+  /* sombras */
+  .shadow-soft {
+    @apply shadow-md;
+  }
+  .shadow-medium {
+    @apply shadow-lg;
+  }
+  .shadow-strong {
+    @apply shadow-2xl;
+  }
+
+  /* dark mode para o body */
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
   }
 }
