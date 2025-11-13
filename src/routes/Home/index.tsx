@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { ArrowRight, Sparkles, Target, TrendingUp, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { usarTema } from "../../context/ContextoTema";
 import Botao from "../../components/Botao/Botao";
-import Card from "../../components/Card/Card";
+import AnalisePersonalizadaCard from "../../components/Cards/AnalisePersonalizadaCard";
+import CarreirasEmergentesCard from "../../components/Cards/CarreirasEmergentesCard";
+import RecomendacoesIACard from "../../components/Cards/RecomendacoesIACard";
 
-// alguem coloca as perguntas e fluxo depois que o banco estiver pronto
 type EtapaPergunta = "area" | "vocacao" | "situacao" | "resultados" | null;
-
 type AreaCarreira = "tecnologia" | "saude" | "design" | "negocios" | "educacao" | "outra";
 type Vocacao = "analitico" | "criativo" | "lideranca" | "tecnico" | "comunicacao" | "outra";
 type SituacaoUsuario = "estudante" | "profissional" | "transicao" | "buscando" | "outro";
@@ -36,102 +37,21 @@ function obterRecomendacoesCarreira(perfil: PerfilUsuario): string[] {
   return base.length ? base.slice(0, 6) : ["Recomendação genérica A", "Recomendação genérica B"];
 }
 
-function PerguntaArea({ aoSelecionar }: { aoSelecionar: (a: AreaCarreira) => void }) {
-  const opcoes: AreaCarreira[] = ["tecnologia", "saude", "design", "negocios", "educacao", "outra"];
-  return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Qual área mais te interessa?</h2>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {opcoes.map((o) => (
-          <button
-            key={o}
-            onClick={() => aoSelecionar(o)}
-            className="rounded-md border p-3 text-left hover:bg-accent transition"
-          >
-            {o}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PerguntaVocacao({
-  aoSelecionar,
-  areaSelecionada,
-}: {
-  aoSelecionar: (v: Vocacao) => void;
-  areaSelecionada: AreaCarreira;
-}) {
-  const opcoes: Vocacao[] = ["analitico", "criativo", "lideranca", "tecnico", "comunicacao", "outra"];
-  return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Que tipo de trabalho você prefere em {areaSelecionada}?</h2>
-      <div className="flex flex-wrap gap-3">
-        {opcoes.map((o) => (
-          <button key={o} onClick={() => aoSelecionar(o)} className="rounded-md border px-4 py-2 hover:bg-accent transition">
-            {o}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PerguntaSituacao({ aoSelecionar }: { aoSelecionar: (s: SituacaoUsuario) => void }) {
-  const opcoes: SituacaoUsuario[] = ["estudante", "profissional", "transicao", "buscando", "outro"];
-  return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Qual sua situação atual?</h2>
-      <div className="flex flex-col gap-2">
-        {opcoes.map((o) => (
-          <button key={o} onClick={() => aoSelecionar(o)} className="rounded-md border px-4 py-2 hover:bg-accent transition">
-            {o}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Resultados({
-  recomendacoes,
-  perfil,
-  aoReiniciar,
-}: {
-  recomendacoes: string[];
-  perfil: PerfilUsuario;
-  aoReiniciar: () => void;
-}) {
-  return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Recomendações</h2>
-      <p className="mb-4 text-sm text-muted-foreground">Perfil selecionado: {perfil.area ?? "—"} / {perfil.vocacao ?? "—"} / {perfil.situacao ?? "—"}</p>
-      <ul className="mb-6 list-disc pl-5">
-        {recomendacoes.map((r, i) => (
-          <li key={i} className="mb-2">{r}</li>
-        ))}
-      </ul>
-      <div className="flex gap-3">
-        <Botao variante="contorno" onClick={aoReiniciar}>Refazer</Botao>
-        <Botao tamanho="pequeno" onClick={() => alert("Salvar recomendações (mock)")}>Salvar</Botao>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
+  const { tema } = usarTema();
 
-  document.title = "Mentor.IA - Descubra sua carreira do futuro";
+  useEffect(() => {
+    document.title = "Mentor.IA - Descubra sua carreira do futuro";
+  }, []);
 
   const [etapa, setEtapa] = useState<EtapaPergunta>(null);
-  const [perfil, setPerfil] = useState<PerfilUsuario>({
-    area: null,
-    vocacao: null,
-    situacao: null,
-  });
+  const [perfil, setPerfil] = useState<PerfilUsuario>({ area: null, vocacao: null, situacao: null });
 
   const iniciarQuestionario = () => setEtapa("area");
+  const reiniciarQuestionario = () => {
+    setPerfil({ area: null, vocacao: null, situacao: null });
+    setEtapa(null);
+  };
 
   const manipularSelecaoArea = (area: AreaCarreira) => {
     setPerfil((anterior) => ({ ...anterior, area }));
@@ -148,43 +68,125 @@ export default function Home() {
     setEtapa("resultados");
   };
 
-  const reiniciarQuestionario = () => {
-    setPerfil({ area: null, vocacao: null, situacao: null });
-    setEtapa(null);
+  const scrollToRecursos = () => {
+    const el = document.getElementById("recursos");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const recomendacoes = etapa === "resultados" ? obterRecomendacoesCarreira(perfil) : [];
 
+  const bgLight = "linear-gradient(180deg,#eef2ff 0%,#ffffff 100%)";
+  const bgDark = "linear-gradient(180deg,#0b1220 0%,#0f1724 100%)";
+  const trocaTema = { background: tema === "dark" ? bgDark : bgLight };
+  const classeTextoTema = tema === "dark" ? "text-gray-100" : "text-gray-900";
+
   if (etapa === "area") {
-    return <PerguntaArea aoSelecionar={manipularSelecaoArea} />;
+    return (
+      <div className={`min-h-screen ${classeTextoTema}`} style={trocaTema}>
+        <div className="flex items-start justify-center py-20">
+          <div className="w-full max-w-3xl p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-current">Qual área mais te interessa?</h2>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {(["tecnologia", "saude", "design", "negocios", "educacao", "outra"] as AreaCarreira[]).map((o) => (
+                <button
+                  key={o}
+                  onClick={() => manipularSelecaoArea(o)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700 p-3 text-left bg-white dark:bg-gray-800 text-current hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (etapa === "vocacao") {
-    return <PerguntaVocacao aoSelecionar={manipularSelecaoVocacao} areaSelecionada={perfil.area ?? "tecnologia"} />;
+    return (
+      <div className={`min-h-screen ${classeTextoTema}`} style={trocaTema}>
+        <div className="flex items-start justify-center py-20">
+          <div className="w-full max-w-3xl p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-current">Que tipo de trabalho você prefere em {perfil.area ?? "sua área"}?</h2>
+            <div className="flex flex-wrap gap-3">
+              {(["analitico", "criativo", "lideranca", "tecnico", "comunicacao", "outra"] as Vocacao[]).map((o) => (
+                <button
+                  key={o}
+                  onClick={() => manipularSelecaoVocacao(o)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700 px-4 py-2 bg-white dark:bg-gray-800 text-current hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (etapa === "situacao") {
-    return <PerguntaSituacao aoSelecionar={manipularSelecaoSituacao} />;
+    return (
+      <div className={`min-h-screen ${classeTextoTema}`} style={trocaTema}>
+        <div className="flex items-start justify-center py-20">
+          <div className="w-full max-w-3xl p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-current">Qual sua situação atual?</h2>
+            <div className="flex flex-col gap-2">
+              {(["estudante", "profissional", "transicao", "buscando", "outro"] as SituacaoUsuario[]).map((o) => (
+                <button
+                  key={o}
+                  onClick={() => manipularSelecaoSituacao(o)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700 px-4 py-2 bg-white dark:bg-gray-800 text-current hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (etapa === "resultados") {
-    return <Resultados recomendacoes={recomendacoes} perfil={perfil} aoReiniciar={reiniciarQuestionario} />;
+    return (
+      <div className={`min-h-screen ${classeTextoTema}`} style={trocaTema}>
+        <div className="flex items-start justify-center py-20">
+          <div className="w-full max-w-3xl p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-current">Recomendações</h2>
+            <p className="mb-4 text-sm text-current/80">
+              Perfil selecionado: {perfil.area ?? "—"} / {perfil.vocacao ?? "—"} / {perfil.situacao ?? "—"}
+            </p>
+            <ul className="mb-6 list-disc pl-5">
+              {recomendacoes.map((r, i) => (
+                <li key={i} className="mb-2 text-current">{r}</li>
+              ))}
+            </ul>
+            <div className="flex gap-3">
+              <Botao variante="contorno" onClick={reiniciarQuestionario}>Refazer</Botao>
+              <Botao tamanho="pequeno" onClick={() => alert("Salvar recomendações (mock)")}>Salvar</Botao>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className={`min-h-screen ${classeTextoTema}`} style={trocaTema}>
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="mx-auto max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-sm font-medium text-indigo-600 dark:border-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300">
             <Sparkles className="h-4 w-4" />
             Orientação de carreira com IA
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-current">
             Descubra sua carreira do futuro
           </h1>
 
-          <p className="text-lg text-muted-foreground sm:text-xl">
+          <p className="text-lg text-current/80 sm:text-xl">
             Plataforma de IA que identifica carreiras emergentes personalizadas para seu perfil, ajudando você a navegar o mercado de trabalho do futuro.
           </p>
 
@@ -193,7 +195,7 @@ export default function Home() {
               Começar análise
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Botao>
-            <Botao tamanho="grande" variante="contorno" to="#recursos">
+            <Botao tamanho="grande" variante="contorno" onClick={scrollToRecursos}>
               Saiba mais
             </Botao>
           </div>
@@ -202,43 +204,23 @@ export default function Home() {
 
       <section id="recursos" className="container mx-auto px-4 py-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="p-6 shadow-soft transition-all hover:shadow-medium">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-primary">
-              <Target className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Análise Personalizada</h3>
-            <p className="text-muted-foreground">Questionário inteligente que identifica suas vocações e preferências de carreira.</p>
-          </Card>
-
-          <Card className="p-6 shadow-soft transition-all hover:shadow-medium">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-primary">
-              <TrendingUp className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Carreiras Emergentes</h3>
-            <p className="text-muted-foreground">Acesso a 24 profissões do futuro em 8 áreas diferentes, baseadas em tendências globais.</p>
-          </Card>
-
-          <Card className="p-6 shadow-soft transition-all hover:shadow-medium">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-primary">
-              <Users className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Recomendações IA</h3>
-            <p className="text-muted-foreground">Algoritmo de matching que sugere as 3 melhores carreiras para seu perfil único.</p>
-          </Card>
+          <AnalisePersonalizadaCard primaryAction={iniciarQuestionario} secondaryAction={scrollToRecursos} />
+          <CarreirasEmergentesCard primaryAction={scrollToRecursos} secondaryAction={() => (window.location.href = "/carreiras")} />
+          <RecomendacoesIACard primaryAction={() => setEtapa("resultados")} secondaryAction={() => alert("Como funciona (mock)")} />
         </div>
       </section>
 
       <section className="container mx-auto px-4 py-20">
-        <Card className="overflow-hidden bg-gradient-primary p-8 text-primary-foreground shadow-strong sm:p-12">
+        <div className="overflow-hidden rounded-lg bg-gradient-to-r from-indigo-600 to-teal-500 p-8 text-white shadow-2xl sm:p-12">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="mb-4 text-3xl font-bold sm:text-4xl">Pronto para descobrir seu futuro?</h2>
             <p className="mb-8 text-lg opacity-90">Responda 3 perguntas simples e receba recomendações personalizadas de carreiras emergentes.</p>
             <Botao tamanho="grande" variante="secundario" onClick={iniciarQuestionario} className="group">
               Iniciar questionário
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <span className="ml-2 h-4 w-4 inline-block transition-transform group-hover:translate-x-1">→</span>
             </Botao>
           </div>
-        </Card>
+        </div>
       </section>
     </div>
   );
