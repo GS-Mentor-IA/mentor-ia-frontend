@@ -1,26 +1,28 @@
-import './globals.css'
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './routes/Home/index.tsx'
-import Error from './routes/Error/index.tsx'
-import ThemeProvider from './types/Tema.tsx' 
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./globals.css";
 
-const router = createBrowserRouter([{
-  path:"/", 
-  element: <App/>, 
-  errorElement: <Error/>, 
-  children:[
-    {index: true, element: <Home/>}, 
-  ]
-}])
+import App from "./App";
+import Error from "./routes/Error";
+import Home from "./routes/Home";
+import { TemaProvider } from "./context/ContextoTema";
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      errorElement: <Error />,
+      children: [{ path: "/", element: <Home /> }],
+    },
+  ],
+);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-
-    <ThemeProvider>
+    <TemaProvider>
       <RouterProvider router={router} />
-    </ThemeProvider>
+    </TemaProvider>
   </StrictMode>
 );

@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mentor.IA</title>
     <link rel="icon" type="image/png" href="/favicon.png"/>
+    <script>
+  (function () {
+    try {
+      const temaSalvo = localStorage.getItem("mentoria-tema");
+      const tema =
+        temaSalvo === "light" || temaSalvo === "dark"
+          ? temaSalvo
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+
+      if (tema === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    } catch (e) {
+      // fallback silencioso
+    }
+  })();
+</script>
+
   </head>
   <body>
     <div id="root"></div>

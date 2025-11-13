@@ -1,57 +1,63 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
-type Tema = "claro" | "escuro";
+export type Tema = "light" | "dark";
 
-interface TemaContextoTipo {
-  tema: Tema;
-  mudarTema: () => void;
+export type AreaCarreira =
+  | "Medicina"
+  | "Computação"
+  | "Engenharias"
+  | "Ciências Sociais"
+  | "Ciências Ambientais"
+  | "Áreas Comerciais"
+  | "Wellness"
+  | "Psicologia";
+
+
+export type Vocacao =
+  | "liderança"
+  | "curiosidade"
+  | "criatividade"
+  | "análise"
+  | "comunicação"
+  | "empatia";
+
+
+export type SituacaoUsuario =
+  | "primeiro-emprego"
+  | "atualizar-area"
+  | "transicionar-area";
+
+
+export interface Carreira {
+  id: string;
+  nome: string;
+  area: AreaCarreira;
+  descricao: string;
+  habilidades: string[];
+  perspectivafutura: string;
 }
 
-const TemaContexto = createContext<TemaContextoTipo | undefined>(undefined);
-
-interface ThemeProviderProps {
-  children: ReactNode;
+export interface PerfilUsuario {
+  area: AreaCarreira | null;
+  vocacao: Vocacao | null;
+  situacao: SituacaoUsuario | null;
 }
 
-export default function ThemeProvider({ children }: ThemeProviderProps) {
-  const [tema, setTema] = useState<Tema>(() => {
-    if (typeof window === "undefined") {
-      return "claro";
-    }
-    const saved = localStorage.getItem("mentoria-tema");
-    if (saved === "claro" || saved === "escuro") {
-      return saved;
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "escuro"
-      : "claro";
-  });
-
-  useEffect(() => {
-    const root = document.documentElement; 
-
-    root.classList.remove("claro", "escuro");
-
-    root.classList.add(tema);
-
-    localStorage.setItem("mentoria-tema", tema);
-  }, [tema]); // Dispara sempre que 'tema' mudar
-
-  const mudarTema = () => {
-    setTema((prev) => (prev === "claro" ? "escuro" : "claro"));
-  };
-
-  return (
-    <TemaContexto.Provider value={{ tema, mudarTema }}>
-      {children}
-    </TemaContexto.Provider>
-  );
+export interface RecomendacaoCarreira {
+  carreira: Carreira;
+  pontuacao: number;
+  justificativa: string;
 }
 
-export function useTheme() {
-  const context = useContext(TemaContexto);
-  if (!context) {
-    throw new Error("useTheme deve ser usado dentro de ThemeProvider");
-  }
-  return context;
+export type EtapaPergunta = "area" | "vocacao" | "situacao" | "resultados";
+
+export type UsuarioComRecomendacoes = PerfilUsuario & {
+  recomendacoes: RecomendacaoCarreira[];
+  dataHora: string;
+};
+export interface MembroEquipe {
+  nome: string;
+  cargo: string;
+  rm: string;
+  github?: string;
+  linkedin?: string;
 }

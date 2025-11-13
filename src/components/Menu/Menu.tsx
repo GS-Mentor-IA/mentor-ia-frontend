@@ -1,23 +1,26 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "../../types/Tema";
+import { usarTema } from "../../context/ContextoTema";
 
 export default function Menu() {
-  const { tema, mudarTema } = useTheme();
+  const { tema, alternarTema } = usarTema();
 
   return (
-    <nav>
+    <nav className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
       <ul>
         <li>
-          <Link to="/">Teste</Link>
+          <Link to="/" className="text-blue-600 dark:text-blue-400 hover:underline">
+            Teste
+          </Link>
         </li>
       </ul>
+
       <button
-        onClick={mudarTema}
-        className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-        aria-label="Toggle theme"
+        onClick={alternarTema}
+        className="mt-4 p-2 rounded-lg bg-gray-200 text-black dark:bg-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+        aria-label="Alternar tema"
       >
-        {tema === 'claro' ? '🌙' : '☀️'}
+        {tema === "light" ? "🌙" : "☀️"}
       </button>
     </nav>
-  )
+  );
 }
