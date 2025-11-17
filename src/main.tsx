@@ -6,18 +6,20 @@ import "./globals.css";
 import App from "./App";
 import Error from "./routes/Error";
 import Home from "./routes/Home";
+import Integrantes from "./pages/Integrantes";
 import { TemaProvider } from "./context/ContextoTema";
 
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <App />,
-      errorElement: <Error />,
-      children: [{ path: "/", element: <Home /> }],
-    },
-  ],
-);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <Error />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/integrantes", element: <Integrantes /> },
+    ],
+  },
+]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
