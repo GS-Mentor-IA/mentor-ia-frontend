@@ -1,76 +1,104 @@
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import Botao from "../components/Botao/Botao";
+import { usarTema } from "../context/ContextoTema";
+
+interface Membro {
+  nome: string;
+  rm: string;
+  turma: string;
+  foto: string;
+  github: string;
+  linkedin: string;
+}
+
+const membros: Membro[] = [
+  {
+    nome: "Eduardo Novaes Mollo",
+    rm: "561515",
+    turma: "1TDSPJ",
+    foto: "/integrantes/enm.jpg",
+    github: "https://github.com/EduMollo",
+    linkedin: "https://www.linkedin.com/in/edumollo",
+  },
+  {
+    nome: "João Henrique Batista Leal",
+    rm: "564361",
+    turma: "1TDSPJ",
+    foto: "/integrantes/jhbl.jpg",
+    github: "https://github.com/JoaoHBatistaLeal",
+    linkedin: "https://www.linkedin.com/in/jo%C3%A3o-leal-8ba769307/",
+  },
+  {
+    nome: "Pedro Henrique Lacerda Ferraz",
+    rm: "563062",
+    turma: "1TDSPJ",
+    foto: "/integrantes/phlf.jpg",
+    github: "https://github.com/ph3103",
+    linkedin: "https://www.linkedin.com/in/pedro-henrique-285397367/",
+  },
+];
 
 export default function Integrantes() {
-  const membros = [
-    {
-      nome: "Eduardo Novaes Mollo",
-      rm: "561515",
-      turma: "1TDSPJ",
-      foto: "/integrantes/enm.jpg",
-      github: "https://github.com/EduMollo",
-      linkedin: "https://www.linkedin.com/in/edumollo",
-    },
-    {
-      nome: "João Henrique Batista Leal",
-      rm: "564361",
-      turma: "1TDSPJ",
-      foto: "/integrantes/jhbl.jpg",
-      github: "https://github.com/JoaoHBatistaLeal",
-      linkedin: "https://www.linkedin.com/in/jo%C3%A3o-leal-8ba769307/",
-    },
-    {
-      nome: "Pedro Henrique Lacerda Ferraz",
-      rm: "563062",
-      turma: "1TDSPJ",
-      foto: "/integrantes/phlf.jpg",
-      github: "https://github.com/ph3103",
-      linkedin: "https://www.linkedin.com/in/pedro-henrique-285397367/",
-    },
-  ];
+  const { tema } = usarTema();
+
+  const bgLight = "linear-gradient(180deg,#eef2ff 0%,#ffffff 100%)";
+  const bgDark = "linear-gradient(180deg,#0b1220 0%,#0f1724 100%)";
+  const styleFundo = { background: tema === "dark" ? bgDark : bgLight };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex flex-col items-center py-20 px-4">
-      <h1 className="text-4xl font-bold text-sky-700 mb-12 text-center">
-        Integrantes do Projeto
-      </h1>
+    <main
+      className="min-h-screen w-full py-20 px-6 text-gray-900 dark:text-gray-100"
+      style={styleFundo}
+    >
+      <section className="container mx-auto max-w-6xl space-y-12">
+        <header className="text-center space-y-3">
+          <h1 className="text-4xl font-bold tracking-tight">Integrantes do Projeto</h1>
+          <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+            Conheça a equipe responsável pelo desenvolvimento da plataforma Mentor.IA.
+          </p>
+        </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl w-full">
-        {membros.map((membro, index) => (
-          <div key={index}
-            className="bg-white shadow-xl rounded-xl p-6 border border-sky-200 flex flex-col items-center text-center hover:scale-[1.02] transition-transform duration-200">
-            
-            <img
-              src={membro.foto}
-              alt={membro.nome}
-              className="w-32 h-32 rounded-full object-cover border-4 border-sky-500 shadow-md"
-            />
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {membros.map((membro) => (
+            <div
+              key={membro.rm}
+              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-medium p-6 flex flex-col items-center text-center"
+            >
+              <img
+                src={membro.foto}
+                alt={membro.nome}
+                className="w-28 h-28 rounded-full object-cover border-4 border-indigo-500 shadow-lg mb-4"
+              />
 
-            <h2 className="text-xl font-semibold text-sky-800 mt-4">{membro.nome}</h2>
-            <p className="text-sky-600 mt-1">RM: {membro.rm}</p>
-            <p className="text-sky-600">Turma: {membro.turma}</p>
+              <h2 className="text-lg font-semibold">{membro.nome}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300">RM: {membro.rm}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Turma: {membro.turma}</p>
 
-            <div className="flex gap-4 mt-4">
-              <a
-                href={membro.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg transition"
-              >
-                <FaGithub size={20} /> GitHub
-              </a>
+              <div className="flex gap-3 mt-6">
+                <Botao
+                  variante="contorno"
+                  tamanho="pequeno"
+                  to={membro.github}
+                  target="_blank"
+                  className="flex items-center gap-2"
+                >
+                  <FaGithub className="h-4 w-4" /> GitHub
+                </Botao>
 
-              <a
-                href={membro.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition"
-              >
-                <FaLinkedin size={20} /> LinkedIn
-              </a>
+                <Botao
+                  variante="padrao"
+                  tamanho="pequeno"
+                  to={membro.linkedin}
+                  target="_blank"
+                  className="flex items-center gap-2"
+                >
+                  <FaLinkedin className="h-4 w-4" /> LinkedIn
+                </Botao>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
