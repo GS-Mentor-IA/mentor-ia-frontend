@@ -1,4 +1,4 @@
-import { GoVerified } from "react-icons/go";
+import { SiOpenai } from "react-icons/si"
 import Botao from "../Botao/Botao";
 
 type Props = {
@@ -11,12 +11,12 @@ export default function AnalisePersonalizadaCard({ primaryAction, secondaryActio
   return (
     <div className={`rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 ${className}`}>
       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-        <GoVerified className="h-6 w-6 text-white" aria-hidden="true" />
+        <SiOpenai className="h-6 w-6 text-white" aria-hidden="true" />
       </div>
-      <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">Análise Personalizada</h3>
-      <p className="text-gray-500 dark:text-gray-300 mb-6">Questionário inteligente que identifica suas vocações e preferências de carreira.</p>
+      <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">Recomendações por IA</h3>
+      <p className="text-gray-500 dark:text-gray-300 mb-6">Recomendação de carreira por IA com base na Análise Personalizada!</p>
       <div className="flex flex-wrap gap-3">
-        <Botao variante="padrao" tamanho="medio" onClick={primaryAction}>Começar</Botao>
+        <Botao variante="padrao" tamanho="medio" onClick={primaryAction}>Ver Recomendações</Botao>
         <Botao variante="contorno" tamanho="pequeno" onClick={secondaryAction}>Detalhes</Botao>
       </div>
     </div>

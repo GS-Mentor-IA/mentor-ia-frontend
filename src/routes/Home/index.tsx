@@ -187,12 +187,12 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-current/80 sm:text-xl">
-            Plataforma de IA que identifica carreiras emergentes personalizadas para seu perfil, ajudando você a navegar o mercado de trabalho do futuro.
+            Plataforma de IA que identifica carreiras emergentes personalizadas para seu perfil, ajudando você a navegar no mercado de trabalho do futuro.
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Botao tamanho="grande" onClick={iniciarQuestionario} className="group">
-              Começar análise
+              Começar Análise
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Botao>
             <Botao tamanho="grande" variante="contorno" onClick={scrollToRecursos}>
