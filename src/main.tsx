@@ -8,6 +8,7 @@ import Error from "./routes/Error";
 import Home from "./routes/Home";
 import Integrantes from "./pages/Integrantes";
 import { TemaProvider } from "./context/ContextoTema";
+import Sobre from "./pages/Sobre";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/integrantes", element: <Integrantes /> },
+      { path: "/sobre", element: <Sobre /> },
     ],
   },
 ]);
