@@ -41,9 +41,12 @@ const membros: Membro[] = [
 export default function Integrantes() {
   const { tema } = usarTema();
 
-  const bgLight = "linear-gradient(180deg,#eef2ff 0%,#ffffff 100%)";
+  const bgLight = "linear-gradient(180deg,#e6ecff 0%,#f4f7ff 100%)";
   const bgDark = "linear-gradient(180deg,#0b1220 0%,#0f1724 100%)";
-  const styleFundo = { background: tema === "dark" ? bgDark : bgLight };
+
+  const styleFundo = {
+    background: tema === "dark" ? bgDark : bgLight,
+  };
 
   return (
     <main
@@ -53,7 +56,7 @@ export default function Integrantes() {
       <section className="container mx-auto max-w-6xl space-y-12">
         <header className="text-center space-y-3">
           <h1 className="text-4xl font-bold tracking-tight">Integrantes do Projeto</h1>
-          <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+          <p className="text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
             Conheça a equipe responsável pelo desenvolvimento da plataforma Mentor.IA.
           </p>
         </header>
@@ -62,7 +65,7 @@ export default function Integrantes() {
           {membros.map((membro) => (
             <div
               key={membro.rm}
-              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-medium p-6 flex flex-col items-center text-center"
+              className="rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg p-6 flex flex-col items-center text-center"
             >
               <img
                 src={membro.foto}
@@ -71,8 +74,9 @@ export default function Integrantes() {
               />
 
               <h2 className="text-lg font-semibold">{membro.nome}</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-300">RM: {membro.rm}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Turma: {membro.turma}</p>
+
+              <p className="text-sm text-gray-700 dark:text-gray-300">RM: {membro.rm}</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300">Turma: {membro.turma}</p>
 
               <div className="flex gap-3 mt-6">
                 <Botao
