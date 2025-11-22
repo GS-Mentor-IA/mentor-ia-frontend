@@ -12,13 +12,20 @@
         try {
           const temaSalvo = localStorage.getItem("tema");
 
+          // aplicar apenas "dark" quando necessário; não adicionar "light"
           if (temaSalvo === "dark") {
             document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.add("light");
+            return;
           }
+
+          // se não há preferência salva, respeitar a preferência do sistema
+          if (!temaSalvo && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          }
+
+          // caso contrário: não adicionar classe (modo claro por padrão)
         } catch (e) {
-          document.documentElement.classList.add("light");
+          // nada — modo claro por padrão
         }
       })();
     </script>

@@ -27,18 +27,18 @@ export function TemaProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const raiz = document.documentElement;
 
-    raiz.classList.remove("light");
-    raiz.classList.remove("dark");
-
-    raiz.classList.add(tema);
+    if (tema === "dark") {
+      raiz.classList.add("dark");
+    } else {
+      raiz.classList.remove("dark");
+    }
 
     try {
       localStorage.setItem("tema", tema);
-    } catch {}
+    } catch { /* empty */ }
   }, [tema]);
 
-  const alternarTema = () =>
-    setTema((t) => (t === "light" ? "dark" : "light"));
+  const alternarTema = () => setTema((t) => (t === "light" ? "dark" : "light"));
 
   return (
     <ContextoTema.Provider value={{ tema, alternarTema }}>
