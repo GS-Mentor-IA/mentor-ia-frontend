@@ -1,4 +1,4 @@
-import { usarTema } from "../context/ContextoTema";
+import { usarTema } from "../../context/ContextoTema";
 
 export default function Sobre() {
   const { tema } = usarTema();

@@ -1,6 +1,6 @@
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import Botao from "../components/Botao/Botao";
-import { usarTema } from "../context/ContextoTema";
+import Botao from "../../components/Botao/Botao";
+import { usarTema } from "../../context/ContextoTema";
 
 interface Membro {
   nome: string;

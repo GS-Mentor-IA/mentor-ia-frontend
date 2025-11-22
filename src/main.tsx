@@ -6,9 +6,10 @@ import "./globals.css";
 import App from "./App";
 import Error from "./routes/Error";
 import Home from "./routes/Home";
-import Integrantes from "./pages/Integrantes";
+import Integrantes from "./routes/pages/Integrantes";
 import { TemaProvider } from "./context/ContextoTema";
-import Sobre from "./pages/Sobre";
+import Sobre from "./routes/pages/Sobre";
+import FAQ from "./routes/pages/FAQ";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/integrantes", element: <Integrantes /> },
       { path: "/sobre", element: <Sobre /> },
+      { path: "/faq", element: <FAQ /> },
     ],
   },
 ]);
