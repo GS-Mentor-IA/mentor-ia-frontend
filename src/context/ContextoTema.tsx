@@ -11,33 +11,45 @@ const ContextoTema = createContext<ContextoTemaProps | undefined>(undefined);
 export function TemaProvider({ children }: { children: ReactNode }) {
   const [tema, setTema] = useState<Tema>(() => {
     if (typeof window === "undefined") return "light";
+
     try {
       const temaSalvo = localStorage.getItem("tema") as Tema | null;
       if (temaSalvo === "light" || temaSalvo === "dark") return temaSalvo;
-      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
     } catch {
       return "light";
     }
   });
 
   useEffect(() => {
-    if (typeof document === "undefined") return;
     const raiz = document.documentElement;
-    raiz.classList.remove("light", "dark");
-    raiz.classList.add(tema);
+
+    if (tema === "dark") {
+      raiz.classList.add("dark");
+    } else {
+      raiz.classList.remove("dark");
+    }
+
     try {
       localStorage.setItem("tema", tema);
-    } catch {
-    }
+    } catch { /* empty */ }
   }, [tema]);
 
-  const alternarTema = () => setTema((prev) => (prev === "light" ? "dark" : "light"));
+  const alternarTema = () => setTema((t) => (t === "light" ? "dark" : "light"));
 
-  return <ContextoTema.Provider value={{ tema, alternarTema }}>{children}</ContextoTema.Provider>;
+  return (
+    <ContextoTema.Provider value={{ tema, alternarTema }}>
+      {children}
+    </ContextoTema.Provider>
+  );
 }
 
 export function usarTema(): ContextoTemaProps {
   const contexto = useContext(ContextoTema);
-  if (!contexto) throw new Error("usarTema deve ser usado dentro de TemaProvider");
+  if (!contexto)
+    throw new Error("usarTema deve ser usado dentro de TemaProvider");
   return contexto;
 }
